@@ -19,8 +19,8 @@ const authenticate = async  ( req, res, next) => {
 
 
         
-    }catch(err) {
-        console.log(err)
+    }catch(error) {
+        console.log(error)
         return res.status(404).json({message: 'Something went wrong', success: false})
     }
 }

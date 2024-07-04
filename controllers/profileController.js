@@ -4,7 +4,7 @@ const Profile = require('../models/profile');
 exports.addProfile = async (req,res,next)=>{
 
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const name = req.body.name;
         const resume = req.body.resume;
         const goals = req.body.goals;
@@ -41,10 +41,12 @@ exports.addProfile = async (req,res,next)=>{
 exports.deleteProfile = async(req,res,next)=>{
 
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
+        const name = req.query.name;
         await Profile.destroy({
             where:{
-                userUserId: userId
+                userUserId: userId,
+                name: name
             }
         });
 
@@ -61,7 +63,7 @@ exports.deleteProfile = async(req,res,next)=>{
 exports.editProfile = async(req,res,next)=>{
 
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const name = req.body.name;
         const resume = req.body.resume;
         const goals = req.body.goals;
@@ -73,7 +75,8 @@ exports.editProfile = async(req,res,next)=>{
             carrerGoals: goals   
         },{
             where: {
-                userUserId: userId
+                userUserId: userId,
+                name:name
             }
         });
 
@@ -94,7 +97,7 @@ exports.editProfile = async(req,res,next)=>{
 exports.getProfiles = async(req,res,next)=>{
 
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const profiles =await  Profile.findAll({
             where:{
                 userUserId: userId
@@ -107,7 +110,7 @@ exports.getProfiles = async(req,res,next)=>{
 
     } catch (error) {
         
-        console.log(err);
+        console.log(error);
         return res.status(500).json({message: 'Something went wrong', success: false});
     }
 

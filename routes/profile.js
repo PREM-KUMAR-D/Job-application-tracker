@@ -12,6 +12,6 @@ router.post('/add-profile',userAuth,profileController.addProfile);
 
 router.post('/edit-profile',userAuth,profileController.editProfile);
 
-router.delete('/delete-profile/:name',userAuth,profileController.deleteProfile);
+router.delete('/delete-profile',userAuth,profileController.deleteProfile);
 
 module.exports = router;
