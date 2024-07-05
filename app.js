@@ -6,11 +6,14 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
 const applicationRoutes = require('./routes/application');
+const reminderRoutes = require('./routes/reminder');
+
 const database = require('./util/database');
 const bodyParser = require('body-parser');
 const User = require('./models/user');
 const Profile = require('./models/profile');
 const Application = require('./models/application');
+const Reminder = require('./models/reminder');
 
 const app = Express();
 
@@ -22,6 +25,8 @@ app.use('/user',userRoutes);
 app.use('/profile',profileRoutes);
 
 app.use('/application',applicationRoutes);
+
+app.use('/reminder',reminderRoutes);
 
 
 
@@ -35,6 +40,10 @@ Profile.belongsTo(User);
 
 Application.belongsTo(Profile);
 Profile.hasMany(Application);
+
+Application.hasMany(Reminder);
+Reminder.belongsTo(Application);
+
 
 database
 .sync()
