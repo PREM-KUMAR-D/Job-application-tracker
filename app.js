@@ -1,6 +1,7 @@
-const dotEnv = require('dotenv').config({path:'./.env'});
+const dotEnv = require('dotenv').config({ path: './.env' });
 const Express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 
 const userRoutes = require('./routes/user');
@@ -24,25 +25,31 @@ const app = Express();
 app.use(bodyParser.json());
 
 
-app.use('/user',userRoutes);
-
-app.use('/profile',profileRoutes);
-
-app.use('/application',applicationRoutes);
-
-app.use('/reminder',reminderRoutes);
-
-app.use('/company',companyRoutes);
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    methods: ["GET", "POST", "DELETE"]
+}))
 
 
+app.use('/user', userRoutes);
+
+app.use('/profile', profileRoutes);
+
+app.use('/application', applicationRoutes);
+
+app.use('/reminder', reminderRoutes);
+
+app.use('/company', companyRoutes);
 
 
-app.use((req,res,next)=>{
-    res.sendFile(path.join(__dirname),`public/${req.url}`);
+
+
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname), `public/${req.url}`);
 });
 
-User.hasMany(Profile);
-Profile.belongsTo(User);
+User.hasMany(Profile, { foreignKey: 'userId' });
+Profile.belongsTo(User, { foreignKey: 'userId' });
 
 Application.belongsTo(Profile);
 Profile.hasMany(Application);
@@ -50,19 +57,19 @@ Profile.hasMany(Application);
 Application.hasMany(Reminder);
 Reminder.belongsTo(Application);
 
-Company.belongsToMany(Application , { through : CompanyApplication });
+Company.belongsToMany(Application, { through: CompanyApplication });
 Application.belongsToMany(Company, { through: CompanyApplication });
 
 
 
 database
-.sync()
-// .sync({force:true})
-.then(()=>{
-    
-    app.listen(process.env.PORT);
-})
-.catch((err)=> console.log(err));
+    .sync()
+    // .sync({force:true})
+    .then(() => {
+
+        app.listen(process.env.PORT);
+    })
+    .catch((err) => console.log(err));
 
 
 

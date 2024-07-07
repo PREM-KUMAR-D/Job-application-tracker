@@ -1,5 +1,6 @@
 const { where } = require('sequelize');
 const Profile = require('../models/profile');
+const User = require('../models/profile');
 
 exports.addProfile = async (req,res,next)=>{
 
@@ -9,11 +10,14 @@ exports.addProfile = async (req,res,next)=>{
         const resume = req.body.resume;
         const goals = req.body.goals;
 
+
+        
+
         const created =await Profile.create({
             name:name,
             resumeLink: resume,
             carrerGoals: goals,
-            userUserId: userId
+            userId: userId
 
         });
 
@@ -45,7 +49,7 @@ exports.deleteProfile = async(req,res,next)=>{
         const name = req.query.name;
         await Profile.destroy({
             where:{
-                userUserId: userId,
+                userId: userId,
                 name: name
             }
         });
@@ -75,7 +79,7 @@ exports.editProfile = async(req,res,next)=>{
             carrerGoals: goals   
         },{
             where: {
-                userUserId: userId,
+                userId: userId,
                 name:name
             }
         });
@@ -100,7 +104,7 @@ exports.getProfiles = async(req,res,next)=>{
         const userId = req.user.userId;
         const profiles =await  Profile.findAll({
             where:{
-                userUserId: userId
+                userId: userId
             }
         });
 
