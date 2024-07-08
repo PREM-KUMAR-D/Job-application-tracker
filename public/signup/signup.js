@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('There was a problem with the signup request:', error);
-            // Handle error (e.g., display an error message to the user)
-            alert('Signup failed. Please try again.');
+            
+            alert(error.response.data.message);
         }
     });
 });

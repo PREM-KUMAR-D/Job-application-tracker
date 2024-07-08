@@ -20,11 +20,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     await fetchProfiles();
 });
 
+addProfileBtn.addEventListener('click', async ()=>{
+    window.location.href='../profile/profile.html'
+})
+
+
+
 async function fetchProfiles() {
     try {
         const response = await axios.get(apiUrl, {
             headers: {
-                'Authorization': ` ${token}`
+                'Authorization': `${token}`
             }
         });
 
