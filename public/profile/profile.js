@@ -11,6 +11,7 @@ const careerGoalsInput = document.getElementById('carrergoals');
 const apiUrl = 'http://localhost:3000/profile';
 const token = localStorage.getItem('token');
 const selectedProfile = localStorage.getItem('selectedProfile');
+const profileId = localStorage.getItem('selectedProfileId');
 
 document.addEventListener('DOMContentLoaded', async () => {
     if (!token) {
@@ -23,7 +24,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     addProfileBtn.addEventListener('click', () => {
-        profileForm.style.display = 'block';
+        if(profileForm.style.display === 'none'){
+            profileForm.style.display='block';
+        }else{
+            profileForm.style.display='none';
+        }
+
+
+        
         profileIdInput.value = '';
         profileNameInput.value = '';
         careerGoalsInput.value = '';
@@ -124,6 +132,7 @@ function setProfile(profile) {
     profileDropdownButton.textContent = profile.name;
     profileNameInput.value = profile.name;
     localStorage.setItem('selectedProfile', profile.name);
+    localStorage.setItem('selectedProfileId',profile.id);
 
     
 }

@@ -27,6 +27,95 @@
         </div>
         <div id="profile-container"></div>
     </div>
+    <div class="container mt-5">
+        <button id="apply-btn" class="btn btn-primary pl-3 ">Apply </button>
+        <button id="company-btn" class="btn btn-primary pl-3 ">Add Company </button>
+    </div>
+
+
+    <div id="application-container" class="container mt-5">
+        
+        <form id="applicationForm" style="display: none;">
+            
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Company Name: </label>
+                <input type="text" class="form-control" id="companyName" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date: </label>
+                <input type="date" class="form-control" id="date">
+            </div>
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes: </label>
+                <input type="text" class="form-control" id="notes">
+            </div>
+            <div class="mb-3">
+                <label for="resumeLink" class="form-label">Upload Resume :</label>
+                <input type="file" class="form-control" id="resumeLink" accept=".pdf,.doc,.docx,.txt">
+            </div>
+
+            <div class="mb-3">
+                <label for="applicationStatus" class="form-label">Application Status:</label>
+                <select class="form-select" id="applicationStatus">
+                    <option value="pending">Pending</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="interviewing">Interviewing</option>
+                    <option value="offer">Offer Received</option>
+                </select>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+        </form>
+        <form id="companyForm" style="display: none;">
+            
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Company Name: </label>
+                <input type="text" class="form-control" id="companyName" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email: </label>
+                <input type="email" class="form-control" id="email">
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number : </label>
+                <input type="tel" class="form-control" id="phone">
+            </div>
+            <div class="mb-3">
+                <label for="companySize" class="form-label">Select Company Size:</label>
+                <select id="companySize" class="form-select" required>
+                    <option value="" selected disabled>Select size</option>
+                    <option value="1-10">1-10</option>
+                    <option value="11-50">11-50</option>
+                    <option value="51-200">51-200</option>
+                    <option value="201-500">201-500</option>
+                    <option value="501-1000">501-1000</option>
+                    <option value="1001-5000">1001-5000</option>
+                    <option value="5001-10000">5001-10000</option>
+                    <option value="10001+">10001+</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="industry" class="form-label">Industry : </label>
+                <input type="text" class="form-control" id="industry">
+            </div>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes : </label>
+                <input type="text" class="form-control" id="notes">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Company</button>
+        </form>
+
+
+    </div>
+    <div class="container mt-5" id="listContainer">
+    
+        <ul id="applicationList" class="profile-list list-group"></ul>
+    </div>
+
     
 
 </body>

@@ -12,7 +12,10 @@ const  Application = database.define('application',{
     companyName:{
         type: Sequelize.STRING,
     }, 
-    date: Sequelize.DATEONLY,
+    date: {
+        type: Sequelize.DATEONLY,
+        defaultValue: new Date()
+    },
     status: Sequelize.CHAR,
     notes: Sequelize.TEXT,
     uploadLink: Sequelize.TEXT

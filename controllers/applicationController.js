@@ -1,8 +1,9 @@
 const Application = require('../models/application');
+const Profile = require('../models/profile');
 const fs = require('fs');
 const AWS = require('aws-sdk');
 
-exports.addApplication = async (req,res,next)=>{
+exports.addApplication = async (req, res, next) => {
 
     try {
         const userId = req.user.userId;
@@ -11,7 +12,7 @@ exports.addApplication = async (req,res,next)=>{
         const notes = req.body.notes;
         const status = req.body.status;
         const profileId = req.body.profileId;
-        
+
 
         const file = req.file;
 
@@ -32,7 +33,7 @@ exports.addApplication = async (req,res,next)=>{
             Body: fileContent
             // ContentType: 'text/html'
         };
-        
+
 
         s3.upload(params, async (err, uploadData) => {
             if (err) {
@@ -57,8 +58,8 @@ exports.addApplication = async (req,res,next)=>{
 
             fs.unlinkSync(file.path);
 
-            
-            res.status(201).json({message:"Applied" , success: true  });
+
+            res.status(201).json({ message: "Applied", success: true });
         });
 
 
@@ -72,13 +73,62 @@ exports.addApplication = async (req,res,next)=>{
 
     } catch (error) {
         if (error.toString() === 'SequelizeUniqueConstraintError: Validation error') {
-            res.status(403).json({ message: "Profile already exists! Please add a profile with different name"  , success: false});
+            res.status(403).json({ message: "Profile already exists! Please add a profile with different name", success: false });
             return;
         }
 
         console.log(error);
-        return res.status(500).json({message: 'Something went wrong', success: false});
+        return res.status(500).json({ message: 'Something went wrong', success: false });
     }
 
+
+}
+
+exports.deleteApplication = async (req,res,next)=>{
+
+
+
+}
+
+
+exports.updateApplication = async(req,res,next)=>{
+    
+}
+
+
+
+
+
+
+exports.getApplications = async (req, res, next) => {
+
+    try {
+        const userId = req.user.userId;
+        const profileId = req.query.profileId;
+
+
+        const profile = await Profile.findByPk(profileId);
+
+        const profileCheck = await req.user.hasProfile(profile);
+
+        if(!profileCheck){
+            return res.status(403).json({ message: 'Not Authorized', success: false });    
+        }
+
+
+        const applications = await Application.findAll({
+            where: {
+                profileId: profileId
+            }
+        });
+
+        res.status(200).json({ message: "applications fetched", success: true, applications: applications });
+
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong', success: false });
+    }
 
 }

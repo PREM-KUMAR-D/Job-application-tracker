@@ -11,7 +11,7 @@ const router = Express.Router();
 
 router.post('/apply',userAuth,multerUpload.single('file'),applicationController.addApplication);
 
-
+router.get('/get-applications',userAuth,applicationController.getApplications);
 
 
 

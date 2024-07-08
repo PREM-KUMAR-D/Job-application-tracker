@@ -17,7 +17,7 @@ const Profile = require('./models/profile');
 const Application = require('./models/application');
 const Reminder = require('./models/reminder');
 const Company = require('./models/company');
-const CompanyApplication = require('./models/companyApplication');
+
 
 
 const app = Express();
@@ -57,14 +57,14 @@ Profile.hasMany(Application);
 Application.hasMany(Reminder);
 Reminder.belongsTo(Application);
 
-Company.belongsToMany(Application, { through: CompanyApplication });
-Application.belongsToMany(Company, { through: CompanyApplication });
+Company.hasMany(Application);
+Application.belongsTo(Company);
 
 
 
 database
-    .sync()
-    // .sync({force:true})
+    // .sync()
+    .sync({force:true})
     .then(() => {
 
         app.listen(process.env.PORT);

@@ -21,7 +21,7 @@ const  Company = database.define('company',{
     },
 
     
-    companySize : Sequelize.BIGINT.UNSIGNED,
+    companySize : Sequelize.STRING,
     industry: Sequelize.STRING,
     notes: Sequelize.TEXT
 });

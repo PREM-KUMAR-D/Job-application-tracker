@@ -11,7 +11,7 @@ router.get('/get-profiles',userAuth,profileController.getProfiles);
 
 router.post('/add-profile',userAuth,multerUpload.single('resumeLink'),profileController.addProfile);
 
-router.post('/edit-profile',userAuth,multerUpload.single('resumeLink'),profileController.editProfile);
+
 
 router.delete('/delete-profile',userAuth,profileController.deleteProfile);
 
