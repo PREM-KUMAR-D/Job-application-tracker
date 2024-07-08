@@ -17,6 +17,7 @@ const Profile = require('./models/profile');
 const Application = require('./models/application');
 const Reminder = require('./models/reminder');
 const Company = require('./models/company');
+const CompanyProfiles = require('./models/companyProfile');
 
 
 
@@ -60,11 +61,14 @@ Reminder.belongsTo(Application);
 Company.hasMany(Application);
 Application.belongsTo(Company);
 
+Company.belongsToMany(Profile, {through: CompanyProfiles});
+Profile.belongsToMany(Company ,{through: CompanyProfiles});
+
 
 
 database
-    // .sync()
-    .sync({force:true})
+    .sync()
+    // .sync({force:true})
     .then(() => {
 
         app.listen(process.env.PORT);

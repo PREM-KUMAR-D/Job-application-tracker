@@ -9,10 +9,10 @@ const router = Express.Router();
 
 
 
-router.post('/get-companies',userAuth,companyController.getAllCompanies);
+router.get('/get-companies',userAuth,companyController.getAllCompanies);
 
 
-router.post('/get-company',userAuth,companyController.getCompanyByName);
+router.delete('/delete',userAuth,companyController.deleteCompany);
 
 
 router.post('/add-company',userAuth,companyController.postSaveCompany);
