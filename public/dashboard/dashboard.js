@@ -7,6 +7,7 @@ const addCompanyBtn = document.getElementById('company-btn');
 const applicationForm = document.querySelector('#applicationForm');
 const companyForm = document.querySelector('#companyForm');
 const applicationList = document.getElementById('applicationList');
+const companyNameSelect = applicationForm.querySelector('#companyName');
 
 const token = localStorage.getItem('token');
 const profile = localStorage.getItem('selectedProfile');
@@ -62,12 +63,44 @@ companyForm.addEventListener('submit', async (event) => {
         console.log(error);
     }
 
+})
 
 
+applicationForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
 
+    const companyNameInput = document.getElementById('companyName');
+    const dateInput = document.getElementById('date');
+    const notesInput = document.getElementById('notes');
+    const resumeInput = document.getElementById('resumeLink');
+    const applicationStatusInput = document.getElementById('applicationStatus')
 
 
+    const formData = new FormData();
+    formData.append('companyName', companyNameInput.value);
+    formData.append('date', dateInput.value);
+    formData.append('file', resumeInput.files[0]);
+    formData.append('notes', notesInput.value);
+    formData.append('status', applicationStatusInput.value);
+    formData.append('profileId', profileId);
+
+    try {
+
+        await axios.post(`http://${host}:${port}/application/apply`, formData, {
+            headers: {
+                'Authorization': `${token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        // applicationForm.reset();
+        await displayApplications();
+
+
+    } catch (error) {
+        console.log(error);
+    }
 
 
 
@@ -87,7 +120,9 @@ applyBtn.addEventListener('click', async () => {
         applicationForm.style.display = 'block';
         setButton(applyBtn);
         unsetButton(addCompanyBtn);
-
+        loadCompanies();
+        applicationList.innerHTML = '';
+        await displayApplications();
     } else {
         applicationForm.style.display = 'none';
     }
@@ -100,6 +135,7 @@ addCompanyBtn.addEventListener('click', async () => {
         companyForm.style.display = 'block';
         setButton(addCompanyBtn);
         unsetButton(applyBtn);
+        applicationList.innerHTML = '';
         await displayCompanies();
     } else {
         companyForm.style.display = 'none';
@@ -173,6 +209,142 @@ function unsetButton(btn) {
     }
 }
 
+async function displayApplications() {
+
+    applicationList.innerHTML = '';
+
+    const created = await axios.post(`http://${host}:${port}/application/get-applications`, {
+        profileId: profileId
+    },
+        {
+            headers: {
+                'Authorization': `${token}`
+            }
+        });
+
+
+    const companyNameInput = document.getElementById('companyName');
+    const dateInput = document.getElementById('date');
+    const notesInput = document.getElementById('notes');
+    const resumeInput = document.getElementById('resumeLink');
+    const applicationStatusInput = document.getElementById('applicationStatus')
+    
+
+
+
+    const applications = created.data.applications;
+
+    for (item of applications) {
+        const name = item.companyName;
+        const date = item.date;
+        const status = item.status;
+        const notes = item.notes;
+
+
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        const itemText = document.createElement('p');
+        itemText.textContent = `${name} - ${notes}`;
+
+        const buttonGroup = document.createElement('div');
+
+        const editButton = document.createElement('button');
+        editButton.className = 'btn btn-warning btn-sm me-2';
+        editButton.textContent = 'Edit';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger btn-sm';
+        deleteButton.textContent = 'Delete';
+
+        const updateStatusButton = document.createElement('button');
+        updateStatusButton.className = 'btn btn-info btn-sm me-2 mt-2 mb-2';
+        updateStatusButton.textContent = 'Update Status';
+
+        const statusDropdown = document.createElement('select');
+        statusDropdown.className = 'form-select me-2';
+        const statuses = ["pending", "accepted", "rejected", "interviewing", "offer"];
+        statuses.forEach(status => {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            if (status === item.status) {
+                option.selected = true;
+            }
+            statusDropdown.appendChild(option);
+        });
+
+        const reminderDateInput = document.createElement('input');
+        reminderDateInput.className = 'form-control me-2 mb-2';
+        reminderDateInput.type = 'datetime-local';
+
+        const setReminderButton = document.createElement('button');
+        setReminderButton.className = 'btn btn-secondary btn-sm me-2';
+        setReminderButton.textContent = 'Set Reminder';
+
+
+        buttonGroup.appendChild(statusDropdown);
+        buttonGroup.appendChild(updateStatusButton);
+        buttonGroup.appendChild(reminderDateInput);
+        buttonGroup.appendChild(setReminderButton);
+        buttonGroup.appendChild(editButton);
+        buttonGroup.appendChild(deleteButton);
+        listItem.appendChild(itemText);
+        listItem.appendChild(buttonGroup);
+
+        applicationList.appendChild(listItem);
+
+
+
+        editButton.addEventListener('click', async () => {
+
+            companyNameInput.value = name;
+            dateInput.value = date;
+            notesInput.value = notes;
+            applicationStatusInput.value = status;
+            applicationList.removeChild(listItem);
+        });
+
+        deleteButton.addEventListener('click', async () => {
+            await axios.delete(`http://${host}:${port}/application/delete?profile=${profileId}&applicationId=${item.id}`, { headers: { "Authorization": token } });
+            applicationList.removeChild(listItem);
+        });
+
+        updateStatusButton.addEventListener('click', async () => {
+            const newStatus = statusDropdown.value;
+            await axios.put(`${apiUrl}/application/update-status`, {
+                applicationId: item.id,
+                status: newStatus
+            }, {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            });
+            item.status = newStatus;
+        });
+
+
+        setReminderButton.addEventListener('click', async () => {
+            const reminderDate = reminderDateInput.value;
+            if (reminderDate) {
+                await axios.post(`${apiUrl}/application/set-reminder`, {
+                    applicationId: item.id,
+                    reminderDate: reminderDate
+                }, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                });
+                alert('Reminder set for ' + reminderDate);
+            } else {
+                alert('Please select a date for the reminder.');
+            }
+        });
+
+
+    }
+
+}
+
 
 async function displayCompanies() {
 
@@ -237,7 +409,7 @@ async function displayCompanies() {
             industryInput.value = industry;
             notesInput.value = notes;
 
-            
+
             applicationList.removeChild(listItem);
         });
 
@@ -249,6 +421,34 @@ async function displayCompanies() {
 
     }
 
+
+
+}
+
+async function loadCompanies() {
+
+    try {
+
+        const created = await axios.get(`http://${host}:${port}/company/get-companies/?profile=${profileId}`, {
+            headers: {
+                'Authorization': `${token}`
+            }
+        });
+
+        const companies = created.data.companies;
+
+        companyNameSelect.innerHTML = '<option value="" selected disabled>Select Company</option>';
+
+        companies.forEach(company => {
+            const option = document.createElement('option');
+            option.value = company.name;
+            option.textContent = company.name;
+            companyNameSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching company sizes:', error);
+        companySizeSelect.innerHTML = '<option value="" selected disabled>Error loading sizes</option>';
+    }
 
 
 }
