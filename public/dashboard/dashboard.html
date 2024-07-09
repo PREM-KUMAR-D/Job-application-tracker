@@ -18,12 +18,42 @@
 </head>
 
 <body>
+    <header class="main-header bg-dark text-white py-3">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Job Tracker</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="../login/login.html">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../signup/signup.html">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../login/login.html">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+
+
 
     <div class="container mt-5">
         <h1>Job Dashboard</h1>
         <div class="dropdown-container" style="display: none;">
-            <button id="add-profile-btn" class="btn btn-primary mb-1">Add Profile</button>
-            <button class="btn btn-secondary dropdown-toggle mb-1" type="button" id="profileDropdown"
+            <button id="add-profile-btn" class="btn btn-primary mb-1 mt-5">Add Profile</button>
+            <button class="btn btn-secondary dropdown-toggle mb-1 mt-5" type="button" id="profileDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Select Profile
             </button>
