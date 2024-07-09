@@ -8,6 +8,7 @@ const applicationForm = document.querySelector('#applicationForm');
 const companyForm = document.querySelector('#companyForm');
 const applicationList = document.getElementById('applicationList');
 const companyNameSelect = applicationForm.querySelector('#companyName');
+const searchInput = document.getElementById('searchInput');
 
 const token = localStorage.getItem('token');
 const profile = localStorage.getItem('selectedProfile');
@@ -228,7 +229,7 @@ async function displayApplications() {
     const notesInput = document.getElementById('notes');
     const resumeInput = document.getElementById('resumeLink');
     const applicationStatusInput = document.getElementById('applicationStatus')
-    
+
 
 
 
@@ -240,11 +241,13 @@ async function displayApplications() {
         const status = item.status;
         const notes = item.notes;
 
+        const div = document.createElement('div');
+
 
         const listItem = document.createElement('li');
         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
         const itemText = document.createElement('p');
-        itemText.textContent = `${name} - ${notes}`;
+        itemText.textContent = ` ${name} -  ${notes}`;
 
         const buttonGroup = document.createElement('div');
 
@@ -290,8 +293,9 @@ async function displayApplications() {
         buttonGroup.appendChild(deleteButton);
         listItem.appendChild(itemText);
         listItem.appendChild(buttonGroup);
+        div.appendChild(listItem);
 
-        applicationList.appendChild(listItem);
+        applicationList.appendChild(div);
 
 
 
@@ -301,7 +305,7 @@ async function displayApplications() {
             dateInput.value = date;
             notesInput.value = notes;
             applicationStatusInput.value = status;
-            applicationForm.style.display='block';
+            applicationForm.style.display = 'block';
             applicationList.removeChild(listItem);
         });
 
@@ -404,7 +408,7 @@ async function displayCompanies() {
 
         editButton.addEventListener('click', async () => {
 
-            companyForm.style.display='block';
+            companyForm.style.display = 'block';
             companyInput.value = name;
             emailInput.value = email;
             phoneInput.value = phone;
@@ -456,4 +460,20 @@ async function loadCompanies() {
 
 }
 
+searchInput.addEventListener('input', filterApplications);
 
+function filterApplications() {
+    const query = searchInput.value.toLowerCase();
+    const applicationItems = applicationList.getElementsByTagName('div');
+
+    Array.from(applicationItems).forEach((item) => {
+        const text = item.querySelector('.list-group-item').querySelector('p').textContent.toLowerCase();
+        
+
+        if (text.includes(query) ) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
