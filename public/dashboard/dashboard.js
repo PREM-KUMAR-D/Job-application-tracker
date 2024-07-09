@@ -9,6 +9,7 @@ const companyForm = document.querySelector('#companyForm');
 const applicationList = document.getElementById('applicationList');
 const companyNameSelect = applicationForm.querySelector('#companyName');
 const searchInput = document.getElementById('searchInput');
+const showChartBtn = document.getElementById('show-chart-btn');
 
 const token = localStorage.getItem('token');
 const profile = localStorage.getItem('selectedProfile');
@@ -476,4 +477,91 @@ function filterApplications() {
             item.style.display = 'none';
         }
     });
+}
+
+showChartBtn.addEventListener('click', async () => {
+    clearScreens();
+    await displayApplicationChart();
+});
+
+function clearScreens() {
+    applicationForm.style.display = 'none';
+    companyForm.style.display = 'none';
+    applicationList.innerHTML = '';
+}
+
+async function displayApplicationChart() {
+    try {
+        const response = await axios.post(`http://${host}:${port}/application/get-applications`, {
+            profileId: profileId
+        }, {
+            headers: {
+                'Authorization': `${token}`
+            }
+        });
+
+        const applications = response.data.applications;
+
+        // Count status occurrences
+        const statusCounts = {
+            pending: 0,
+            accepted: 0,
+            rejected: 0,
+            interviewing: 0,
+            offer: 0
+        };
+
+        applications.forEach(app => {
+            statusCounts[app.status]++;
+        });
+
+        // Prepare data for Chart.js
+        const statusLabels = Object.keys(statusCounts);
+        const statusData = Object.values(statusCounts);
+
+        // Clear previous chart if any
+        const chartContainer = document.createElement('div');
+        chartContainer.innerHTML = '<canvas id="statusChart"></canvas>';
+        applicationList.appendChild(chartContainer);
+
+        // Create Chart.js pie chart
+        const ctx = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: statusLabels,
+                datasets: [{
+                    label: 'Application Status',
+                    data: statusData,
+                    backgroundColor: [
+                        '#007BFF',
+                        '#28A745',
+                        '#DC3545',
+                        '#FFC107',
+                        '#17A2B8'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(0) + ' applications';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching applications or creating chart:', error);
+        alert('Failed to display application status chart');
+    }
 }
