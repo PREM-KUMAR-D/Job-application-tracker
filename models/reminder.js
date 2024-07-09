@@ -10,7 +10,7 @@ const  Reminder = database.define('reminders',{
         autoIncrement: true
     },
     remindAfter : {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         allowNull: false
     }
 });

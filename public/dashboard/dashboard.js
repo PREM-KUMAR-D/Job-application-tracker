@@ -301,6 +301,7 @@ async function displayApplications() {
             dateInput.value = date;
             notesInput.value = notes;
             applicationStatusInput.value = status;
+            applicationForm.style.display='block';
             applicationList.removeChild(listItem);
         });
 
@@ -326,9 +327,10 @@ async function displayApplications() {
         setReminderButton.addEventListener('click', async () => {
             const reminderDate = reminderDateInput.value;
             if (reminderDate) {
-                await axios.post(`${apiUrl}/application/set-reminder`, {
+                await axios.post(`http://${host}:${port}/reminder/remind`, {
                     applicationId: item.id,
-                    reminderDate: reminderDate
+                    date: reminderDate,
+
                 }, {
                     headers: {
                         'Authorization': `${token}`
@@ -402,6 +404,7 @@ async function displayCompanies() {
 
         editButton.addEventListener('click', async () => {
 
+            companyForm.style.display='block';
             companyInput.value = name;
             emailInput.value = email;
             phoneInput.value = phone;

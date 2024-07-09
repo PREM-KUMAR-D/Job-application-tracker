@@ -15,9 +15,11 @@ exports.remindAfterPost = async (req, res, next) => {
 
         const applicationId = req.body.applicationId;
         const date = req.body.date;
-        const email = req.body.email;
+        const email = req.user.email;
         const d = new Date(date);
         const dUnix = Math.floor(d.getTime() / 1000);
+
+
 
 
         if ((Date.now() - dUnix) <= 0) {
