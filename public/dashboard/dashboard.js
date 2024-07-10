@@ -502,7 +502,7 @@ async function displayApplicationChart() {
 
         const applications = response.data.applications;
 
-        // Count status occurrences
+        
         const statusCounts = {
             pending: 0,
             accepted: 0,
@@ -515,16 +515,16 @@ async function displayApplicationChart() {
             statusCounts[app.status]++;
         });
 
-        // Prepare data for Chart.js
+        
         const statusLabels = Object.keys(statusCounts);
         const statusData = Object.values(statusCounts);
 
-        // Clear previous chart if any
+        
         const chartContainer = document.createElement('div');
         chartContainer.innerHTML = '<canvas id="statusChart"></canvas>';
         applicationList.appendChild(chartContainer);
 
-        // Create Chart.js pie chart
+        
         const ctx = document.getElementById('statusChart').getContext('2d');
         new Chart(ctx, {
             type: 'pie',

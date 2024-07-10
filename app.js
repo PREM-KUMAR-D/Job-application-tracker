@@ -46,7 +46,10 @@ app.use('/company', companyRoutes);
 
 
 app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname), `public/${req.url}`);
+
+    
+
+    res.sendFile(path.join(__dirname,`public/${req.url}`));
 });
 
 User.hasMany(Profile, { foreignKey: 'userId' });
