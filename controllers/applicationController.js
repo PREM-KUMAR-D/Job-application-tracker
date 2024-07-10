@@ -115,7 +115,21 @@ exports.deleteApplication = async (req, res, next) => {
 }
 
 
-exports.updateApplication = async (req, res, next) => {
+exports.updateApplicationStatus = async (req, res, next) => {
+
+    try {
+        const applicationId = req.body.applicationId;
+        const status = req.body.status;
+        const updated = await Application.update({
+            where:{
+                id: applicationId
+            }
+        })
+        res.status(200).json({ message: "Deleted", success: true });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong', success: false }); 
+    }
 
 }
 
