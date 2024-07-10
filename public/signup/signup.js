@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.querySelector('form');
-    const host = 'localhost';
+    const host = '13.232.90.189';
     const port = '3000';
     const apiUrl = `http://${host}:${port}/user/signup`;
 

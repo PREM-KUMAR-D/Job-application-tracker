@@ -1,7 +1,7 @@
 node_modules/
 package-lock.json
 .env
-public/upload
+public/upload/*
 public/chart/
 todo
 .env.prod.env

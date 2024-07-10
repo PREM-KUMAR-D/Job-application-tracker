@@ -1,7 +1,7 @@
 const loginForm = document.querySelector('form');
 const signupBtn = document.querySelector('#signup-btn');
 
-const host = 'localhost';
+const host = '13.232.90.189';
 const port = '3000';
 
 loginForm.addEventListener('submit', async (event) =>{

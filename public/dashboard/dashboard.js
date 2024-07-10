@@ -15,7 +15,7 @@ const token = localStorage.getItem('token');
 const profile = localStorage.getItem('selectedProfile');
 const profileId = localStorage.getItem('selectedProfileId');
 
-const host = 'localhost';
+const host = '13.232.90.189';
 const port = '3000';
 
 document.addEventListener('DOMContentLoaded', async () => {
