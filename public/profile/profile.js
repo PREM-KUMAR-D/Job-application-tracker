@@ -154,7 +154,7 @@ profileForm.addEventListener('submit', async (event) => {
 
     try {
 
-        await axios.post(`${apiUrl}/add-profile`, formData, {
+        const profile = await axios.post(`${apiUrl}/add-profile`, formData, {
             headers: {
                 'Authorization': `${token}`,
                 'Content-Type': 'multipart/form-data'
@@ -163,6 +163,7 @@ profileForm.addEventListener('submit', async (event) => {
 
         profileForm.reset();
         profileForm.style.display = 'none';
+        // setProfile();
         await fetchProfiles();
     } catch (error) {
         console.log(error);

@@ -62,9 +62,9 @@ exports.addProfile = async (req, res, next) => {
 
             if(isCreated){
 
-                res.status(201).json({ message: "Profile created", success: true });
+                res.status(201).json({ message: "Profile created", success: true , profile: created});
             }else{
-                res.status(201).json({ message: "Profile updated", success: true });
+                res.status(201).json({ message: "Profile updated", success: true , profile: created});
             }
 
         });
