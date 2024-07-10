@@ -163,7 +163,7 @@ profileForm.addEventListener('submit', async (event) => {
 
         profileForm.reset();
         profileForm.style.display = 'none';
-        // setProfile();
+        setProfile(profile.data.profile);
         await fetchProfiles();
     } catch (error) {
         console.log(error);
