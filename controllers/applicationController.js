@@ -120,11 +120,14 @@ exports.updateApplicationStatus = async (req, res, next) => {
     try {
         const applicationId = req.body.applicationId;
         const status = req.body.status;
-        const updated = await Application.update({
-            where:{
-                id: applicationId
+        const updated = await Application.update(
+            { status: status },
+            {
+                where: {
+                    id: applicationId
+                }
             }
-        })
+        );
         res.status(200).json({ message: "Deleted", success: true });
     } catch (error) {
         console.log(error);
