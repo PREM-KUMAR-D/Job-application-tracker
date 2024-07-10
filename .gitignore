@@ -4,3 +4,4 @@ package-lock.json
 public/upload
 public/chart/
 todo
+.env.prod.env

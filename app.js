@@ -26,10 +26,7 @@ const app = Express();
 app.use(bodyParser.json());
 
 
-app.use(cors({
-    origin: 'http://127.0.0.1:5500',
-    methods: ["GET", "POST", "DELETE"]
-}))
+app.use(cors());
 
 
 app.use('/user', userRoutes);
