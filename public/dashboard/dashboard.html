@@ -51,12 +51,14 @@
 
     <div class="container mt-5">
         <h1>Job Dashboard</h1>
-        <div class="dropdown-container" style="display: block;">
+        <div class="container" style="display: block;">
             <button id="add-profile-btn" class="btn btn-primary mb-1 mt-5">Add Profile</button>
-            <button class="btn btn-secondary dropdown-toggle mb-1 mt-5" type="button" id="profileDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Select Profile
-            </button>
+            <div class="dropdown-container" style="display: none;">
+                <button class="btn btn-secondary dropdown-toggle mb-1 mt-5" type="button" id="profileDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Profile
+                </button>
+            </div>
             <br>
             <input type="text" id="searchInput" class="form-control mr-10" placeholder="Search Applications">
             <ul class="dropdown-menu" aria-labelledby="profileDropdown" id="profileList">
