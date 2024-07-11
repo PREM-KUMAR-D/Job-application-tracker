@@ -317,7 +317,7 @@ async function displayApplications() {
 
         updateStatusButton.addEventListener('click', async () => {
             const newStatus = statusDropdown.value;
-            await axios.put(`${apiUrl}/application/update-status`, {
+            await axios.post(`http://${host}:${port}/application/update-status`, {
                 applicationId: item.id,
                 status: newStatus
             }, {

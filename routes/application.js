@@ -16,7 +16,7 @@ router.post('/get-applications',userAuth,profileAuth,applicationController.getAp
 
 router.delete('/delete',userAuth,applicationController.deleteApplication);
 
-
+router.post('/update-status',userAuth,applicationController.updateApplicationStatus);
 
 
 
